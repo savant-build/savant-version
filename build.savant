@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-project(group: "org.savantbuild", name: "savant-version", version: "2.0.0-RC.1", licenses: ["ApacheV2_0"]) {
+project(group: "org.savantbuild", name: "savant-version", version: "2.0.0-RC.2", licenses: ["ApacheV2_0"]) {
   workflow {
     fetch {
       cache()
@@ -49,9 +49,6 @@ release = loadPlugin(id: "org.savantbuild.plugin:release-git:2.0.0-RC.1")
 // Plugin settings
 java.settings.javaVersion = "1.8"
 javaTestNG.settings.javaVersion = "1.8"
-idea.settings.moduleMap = [
-    "org.savantbuild:savant-utils:2.0.0-RC.1": "savant-utils"
-]
 
 target(name: "clean", description: "Cleans the project") {
   java.clean()
