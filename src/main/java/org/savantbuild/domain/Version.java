@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2022-2024, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -165,6 +165,12 @@ public class Version implements Comparable<Version> {
 
     this.major = major != null ? major : 0;
     this.minor = minor != null ? minor : 0;
+    if (patch == null) {
+      var error = String.format("%d.%d is not a valid semantic version. It is missing the patch number in major.minor.patch",
+          major,
+          minor);
+      throw new VersionException(error);
+    }
     this.patch = patch != null ? patch : 0;
   }
 

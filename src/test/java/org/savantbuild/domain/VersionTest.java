@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2022-2024, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,6 +139,12 @@ public class VersionTest {
     Assert.assertTrue(new Version("1.2.3-beta.2.{integration}").isIntegration());
     Assert.assertFalse(new Version("1.2.3-beta.2-{integration}").isIntegration());
     Assert.assertFalse(new Version("1.2.3-beta.2+{integration}").isIntegration());
+  }
+
+  @Test(expectedExceptions = VersionException.class,
+      expectedExceptionsMessageRegExp = "1.8 is not a valid semantic version. It is missing the patch number in major.minor.patch")
+  public void partial_no_patch() {
+    new Version("1.8");
   }
 
   @Test
