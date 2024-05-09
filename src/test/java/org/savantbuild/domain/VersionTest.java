@@ -34,13 +34,13 @@ import static java.util.Arrays.asList;
  */
 public class VersionTest {
   @Test
-  public void compare() throws Exception {
+  public void compare() {
     // Test identity
     Assert.assertEquals(new Version("1.1.0").compareTo(new Version("1.1.0")), 0);
 
     // Test everything else
-    assertCompareTo("2", "1");
-    assertCompareTo("1.8", "1.7");
+    assertCompareTo("2.0.0", "1.0.0");
+    assertCompareTo("1.8.0", "1.7.0");
     assertCompareTo("1.8.1", "1.8.0");
 
     assertCompareTo("1.8.0-beta", "1.8.0-1");
@@ -75,9 +75,9 @@ public class VersionTest {
     assertCompareTo("1.8.0-2.2.2", "1.8.0-2.2.1");
     assertCompareTo("1.8.0-2.2.2.2", "1.8.0-2.2.2.1");
 
-    List<Version> versions = new ArrayList<>(asList(new Version("3.0"), new Version("1.7"), new Version("1.0"), new Version("2.0"), new Version("1.8"), new Version("1.6-alpha"), new Version("1.6")));
+    List<Version> versions = new ArrayList<>(asList(new Version("3.0.0"), new Version("1.7.0"), new Version("1.0.0"), new Version("2.0.0"), new Version("1.8.0"), new Version("1.6.0-alpha"), new Version("1.6.0")));
     Collections.sort(versions);
-    Assert.assertEquals(versions, asList(new Version("1.0"), new Version("1.6-alpha"), new Version("1.6"), new Version("1.7"), new Version("1.8"), new Version("2.0"), new Version("3.0")));
+    Assert.assertEquals(versions, asList(new Version("1.0.0"), new Version("1.6.0-alpha"), new Version("1.6.0"), new Version("1.7.0"), new Version("1.8.0"), new Version("2.0.0"), new Version("3.0.0")));
   }
 
   @Test
@@ -86,8 +86,8 @@ public class VersionTest {
     Assert.assertEquals(new Version("1.1.0"), new Version("1.1.0"));
 
     // Test parts
-    assertVersionEquals("1", 1, 0, 0, null);
-    assertVersionEquals("1.1", 1, 1, 0, null);
+    assertVersionEquals("1.0.0", 1, 0, 0, null);
+    assertVersionEquals("1.1.0", 1, 1, 0, null);
     assertVersionEquals("1.2.6", 1, 2, 6, null);
     assertVersionEquals("1.2.6-alpha", 1, 2, 6, new PreRelease(new StringPreReleasePart("alpha")));
     assertVersionEquals("1.2.6-alpha.beta", 1, 2, 6, new PreRelease(new StringPreReleasePart("alpha"), new StringPreReleasePart("beta")));
@@ -101,7 +101,7 @@ public class VersionTest {
   }
 
   @Test
-  public void ints() throws Exception {
+  public void ints() {
     Version v = new Version(1, 1, 2, null, null);
     Assert.assertEquals(1, v.major);
     Assert.assertEquals(1, v.minor);
@@ -115,19 +115,19 @@ public class VersionTest {
     try {
       new Version(-1, 0, 0, null, null);
       Assert.fail("Should have failed");
-    } catch (Exception e) {
+    } catch (Exception ignore) {
     }
 
     try {
       new Version(0, -1, 0, null, null);
       Assert.fail("Should have failed");
-    } catch (Exception e) {
+    } catch (Exception ignore) {
     }
 
     try {
       new Version(0, 0, -1, null, null);
       Assert.fail("Should have failed");
-    } catch (Exception e) {
+    } catch (Exception ignore) {
     }
   }
 
@@ -145,12 +145,12 @@ public class VersionTest {
   public void string() throws Exception {
     assertVersion("10.100.2000", 10, 100, 2000, false, false, true, false, false, null, null);
     assertVersion("0.0.0", 0, 0, 0, true, false, false, false, false, null, null);
-    assertVersion("17", 17, 0, 0, true, false, false, false, false, null, null);
-    assertVersion("3.4", 3, 4, 0, false, true, false, false, false, null, null);
+    assertVersion("17.0.0", 17, 0, 0, true, false, false, false, false, null, null);
+    assertVersion("3.4.0", 3, 4, 0, false, true, false, false, false, null, null);
     assertVersion("3.4.8", 3, 4, 8, false, false, true, false, false, null, null);
 
-    assertVersion("3-RC1", 3, 0, 0, false, false, false, true, false, new PreRelease(new StringPreReleasePart("RC1")), null);
-    assertVersion("3.4-RC1", 3, 4, 0, false, false, false, true, false, new PreRelease(new StringPreReleasePart("RC1")), null);
+    assertVersion("3.0.0-RC1", 3, 0, 0, false, false, false, true, false, new PreRelease(new StringPreReleasePart("RC1")), null);
+    assertVersion("3.4.0-RC1", 3, 4, 0, false, false, false, true, false, new PreRelease(new StringPreReleasePart("RC1")), null);
     assertVersion("3.4.5-RC1", 3, 4, 5, false, false, false, true, false, new PreRelease(new StringPreReleasePart("RC1")), null);
 
     assertVersion("3.4.5-beta", 3, 4, 5, false, false, false, true, false, new PreRelease(new StringPreReleasePart("beta")), null);
@@ -215,7 +215,7 @@ public class VersionTest {
     try {
       new Version(spec);
       Assert.fail("Should have failed");
-    } catch (Exception e) {
+    } catch (Exception ignore) {
     }
   }
 
@@ -249,9 +249,10 @@ public class VersionTest {
     Assert.assertTrue(comparison < 0);
   }
 
+  @SuppressWarnings("SameParameterValue")
   private void assertVersion(String spec, int major, int minor, int patch, boolean isMajor, boolean isMinor,
-                             boolean isPatch,
-                             boolean isPreRelease, boolean isIntegration, PreRelease preRelease, String metaData) {
+                             boolean isPatch, boolean isPreRelease, boolean isIntegration, PreRelease preRelease,
+                             String metaData) {
     Version v = new Version(spec);
     Assert.assertEquals(v.major, major);
     Assert.assertEquals(v.minor, minor);
@@ -265,6 +266,7 @@ public class VersionTest {
     Assert.assertEquals(v.metaData, metaData);
   }
 
+  @SuppressWarnings("SameParameterValue")
   private void assertVersionEquals(String spec1, int major, int minor, int patch, PreRelease preRelease) {
     Version v1 = new Version(spec1);
     Version v2 = new Version(major, minor, patch, preRelease, null);
