@@ -18,6 +18,7 @@ package org.savantbuild.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.savantbuild.domain.Version.PreRelease.PreReleasePart.NumberPreReleasePart;
@@ -40,6 +41,7 @@ import org.savantbuild.domain.Version.PreRelease.PreReleasePart.StringPreRelease
  *
  * @author Brian Pontarelli
  */
+@SuppressWarnings("unused")
 public class Version implements Comparable<Version> {
   public static final String INTEGRATION = "{integration}";
 
@@ -108,7 +110,7 @@ public class Version implements Comparable<Version> {
     for (; i < version.length(); i++) {
       char c = version.charAt(i);
       if (c == '.') {
-        if (num.length() == 0) {
+        if (num.isEmpty()) {
           throw new VersionException("Invalid Semantic Version string [" + version + "]. Two version delimiters should not be next to each other.");
         }
 
@@ -124,7 +126,7 @@ public class Version implements Comparable<Version> {
 
         num.setLength(0);
       } else if (c == '-' || c == '+') {
-        if (num.length() == 0) {
+        if (num.isEmpty()) {
           throw new VersionException("Invalid Semantic Version string [" + version + "]. Two version delimiters should not be next to each other.");
         }
 
@@ -137,7 +139,7 @@ public class Version implements Comparable<Version> {
     }
 
     // Handle the final value
-    if (num.length() > 0) {
+    if (!num.isEmpty()) {
       if (major == null) {
         major = Integer.parseInt(num.toString());
       } else if (minor == null) {
@@ -163,9 +165,13 @@ public class Version implements Comparable<Version> {
       metaData = null;
     }
 
-    this.major = major != null ? major : 0;
-    this.minor = minor != null ? minor : 0;
-    this.patch = patch != null ? patch : 0;
+    if (major == null || minor == null || patch == null) {
+      throw new VersionException("Invalid Semantic Version string [" + version + "]. It MUST contain 3 top-level non-negative integers in the form <major>.<minor>.<patch>");
+    }
+
+    this.major = major;
+    this.minor = minor;
+    this.patch = patch;
   }
 
   /**
@@ -218,7 +224,7 @@ public class Version implements Comparable<Version> {
     return major == that.major &&
         minor == that.minor &&
         patch == that.patch &&
-        (preRelease != null ? preRelease.equals(that.preRelease) : that.preRelease == null);
+        Objects.equals(preRelease, that.preRelease);
   }
 
   public int getMajor() {
@@ -326,7 +332,7 @@ public class Version implements Comparable<Version> {
    * @return A String of the version number.
    */
   public String toString() {
-    return "" + major + "." + minor + "." + patch + (preRelease != null ? "-" + preRelease : "") + (metaData != null ? "+" + metaData : "");
+    return major + "." + minor + "." + patch + (preRelease != null ? "-" + preRelease : "") + (metaData != null ? "+" + metaData : "");
   }
 
   /**
@@ -353,7 +359,7 @@ public class Version implements Comparable<Version> {
       for (; i < spec.length(); i++) {
         char c = spec.charAt(i);
         if (c == '.') {
-          if (part.length() == 0) {
+          if (part.isEmpty()) {
             throw new VersionException("Invalid Semantic Version PreRelease string [" + spec + "]. Two version separators (.) should not be next to each other.");
           }
 
@@ -418,16 +424,16 @@ public class Version implements Comparable<Version> {
      * @return True if the PreRelease contains a part that is an integration indicator. This part must be the last part.
      */
     public boolean isIntegration() {
-      return parts.size() > 0 && parts.get(parts.size() - 1).isIntegration();
+      return !parts.isEmpty() && parts.get(parts.size() - 1).isIntegration();
     }
 
     @Override
     public String toString() {
-      return String.join(".", parts.stream().map(Object::toString).collect(Collectors.toList()));
+      return parts.stream().map(Object::toString).collect(Collectors.joining("."));
     }
 
     private void addPart(StringBuilder part) {
-      if (part.length() == 0) {
+      if (part.isEmpty()) {
         return;
       }
 
@@ -461,6 +467,7 @@ public class Version implements Comparable<Version> {
       /**
        * A number part of the PreRelease portion of the Semantic Version String.
        */
+      @SuppressWarnings("ClassCanBeRecord")
       class NumberPreReleasePart implements PreReleasePart {
         public final int value;
 
@@ -514,6 +521,7 @@ public class Version implements Comparable<Version> {
       /**
        * A String part of the PreRelease portion of the Semantic Version String.
        */
+      @SuppressWarnings("ClassCanBeRecord")
       class StringPreReleasePart implements PreReleasePart {
         public final String value;
 
