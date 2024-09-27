@@ -10,29 +10,28 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Groovy 2.4" level="application" />
+    <orderEntry type="library" name="Groovy 4.0" level="application" />
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/dev/os/savant/savant-version/.savant/cache/org/testng/testng/6.8.7/testng-6.8.7.jar!/" />
+          <root url="jar://$MODULE_DIR$/.savant/cache/org/testng/testng/6.8.7/testng-6.8.7.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/dev/os/savant/savant-version/.savant/cache/org/testng/testng/6.8.7/testng-6.8.7-src.jar!/" />
+          <root url="jar://$MODULE_DIR$/.savant/cache/org/testng/testng/6.8.7/testng-6.8.7-src.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/dev/os/savant/savant-version/.savant/cache/com/beust/jcommander/1.27.0/jcommander-1.27.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/.savant/cache/com/beust/jcommander/1.27.0/jcommander-1.27.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/dev/os/savant/savant-version/.savant/cache/com/beust/jcommander/1.27.0/jcommander-1.27.0-src.jar!/" />
+          <root url="jar://$MODULE_DIR$/.savant/cache/com/beust/jcommander/1.27.0/jcommander-1.27.0-src.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
   </component>
 </module>
-
